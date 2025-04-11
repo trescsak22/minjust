@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Chat App</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    .container { max-width: 500px; margin: 0 auto; padding: 20px; }
+    #chat { display: block; }
+    .message { border-bottom: 1px solid #ccc; padding: 5px; }
+    #messageInput { width: 100%; padding: 10px; margin-top: 10px; }
+    button { padding: 10px 20px; cursor: pointer; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div id="chat">
+    <h2>Chat Room</h2>
+    <div id="messages"></div>
+    <input type="text" id="messageInput" placeholder="Type a message...">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<script>
+  function sendMessage() {
+    const input = document.getElementById('messageInput');
+    const message = input.value.trim();
+    if (message) {
+      const messages = JSON.parse(localStorage.getItem('messages')) || [];
+      messages.push({ user: 'User', text: message });
+      localStorage.setItem('messages', JSON.stringify(messages));
+      input.value = '';
+      loadMessages();
+    }
+  }
+
+  function loadMessages() {
+    const messagesDiv = document.getElementById('messages');
+    const messages = JSON.parse(localStorage.getItem('messages')) || [];
+    messagesDiv.innerHTML = messages.map(m => `<div class="message"><strong>${m.user}:</strong> ${m.text}</div>`).join('');
+  }
+
+  loadMessages();
+</script>
+</body>
+</html>
